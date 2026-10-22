@@ -12,3 +12,9 @@ The extension source is kept in a separate private repository. This repo holds o
 3. Run `python3 build.py` to regenerate `index.html`, then commit and push.
 
 The Edge screens on the page are drawn illustrations (`illustrations.py`). The Canvas screenshots in `assets/` are real RJ Tasks screens with sample classes and assignments.
+
+## Security
+- Static files only. The page loads nothing from other hosts (fonts are self-hosted) and collects nothing.
+- A Content-Security-Policy meta tag allows only this site's own scripts, styles, images and fonts; no inline script or style.
+- `downloads/SHA256SUMS.txt` lists the hash of the release zip. `build.py` regenerates it.
+- Ideas and problem reports go to an RJ-only Microsoft Form, never to this site.
