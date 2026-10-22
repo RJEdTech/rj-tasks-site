@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RJ Tasks</title>
+<meta name="description" content="RJ Tasks is a Microsoft Edge extension for Regis Jesuit students: see what's due, what's missing, and what to work on first, right inside Canvas.">
+<link rel="icon" type="image/png" href="assets/icon-48.png">
+<meta property="og:title" content="RJ Tasks">
+<meta property="og:description" content="See what's due, what's missing, and what to work on first, right inside Canvas.">
+<meta property="og:image" content="assets/shot-1-my-work.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: an extension listing. Header row (icon, name, publisher, Get button), a screenshot strip,
+   then a two-column body: overview/install on the left, a details rail on the right. */
+:root {
+  --bg: #f4f6f8;
+  --card: #ffffff;
+  --ink: #142029;
+  --muted: #4a5763;
+  --line: #d7dde4;
+  --accent: #0e6a47;
+  --accent-ink: #ffffff;
+  --mark: #c2410c;
+  --mark-soft: #fff1e8;
+  --note: #eef3f8;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #10161c; --card: #18212a; --ink: #e6ecf1; --muted: #a7b3be; --line: #2a3540;
+    --accent: #3fbf86; --accent-ink: #0b1a13; --mark: #ff8a50; --mark-soft: #2b1d14; --note: #172431;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.55 var(--body); }
+img { max-width: 100%; }
+.wrap {
+  max-width: 1120px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.12; }
+h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.5rem, 3.2vw, 1.95rem); font-weight: 800; letter-spacing: -0.01em; }
+h3 { font-size: 1.2rem; font-weight: 600; }
+p { margin: 0; }
+a { color: var(--accent); text-underline-offset: 3px; }
+code, .kbd { font-family: var(--mono); font-size: 0.88em; }
+.kbd { background: var(--note); border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; white-space: nowrap; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* top bar */
+.topbar { border-bottom: 1px solid var(--line); background: var(--card); position: sticky; top: 0; z-index: 5; }
+.topbar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 10px; flex-wrap: wrap; }
+.topbar .who { font-weight: 700; font-size: 0.9rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.topbar nav { display: flex; gap: 18px; flex-wrap: wrap; font-weight: 600; font-size: 0.95rem; }
+.topbar nav a { color: var(--ink); text-decoration: none; }
+.topbar nav a:hover { color: var(--accent); }
+
+/* listing header */
+.listing { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 24px; align-items: center; padding-block: 36px 24px; }
+.listing img.icon { width: 96px; height: 96px; border-radius: 20px; }
+.publisher { color: var(--muted); margin-top: 6px; }
+.publisher strong { color: var(--ink); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.chip { font-size: 0.82rem; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--note); border: 1px solid var(--line); color: var(--ink); }
+.get { display: flex; flex-direction: column; gap: 8px; align-items: stretch; min-width: 0; }
+.btn { display: inline-flex; justify-content: center; align-items: center; gap: 10px; font: 700 1.05rem/1 var(--body); padding: 14px 22px; border-radius: 10px; border: 0; cursor: pointer; background: var(--accent); color: var(--accent-ink); text-decoration: none; }
+.btn:hover { filter: brightness(1.08); }
+.btn.secondary { background: transparent; color: var(--ink); border: 1px solid var(--line); font-size: 0.95rem; padding: 10px 16px; }
+.get small { color: var(--muted); text-align: center; font-size: 0.82rem; }
+
+/* screenshots */
+.shots { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; margin-bottom: 8px; }
+.shots figure { margin: 0; flex: 0 0 auto; width: min(640px, 86vw); scroll-snap-align: start; }
+.shots figure.tall { width: min(320px, 70vw); }
+.shots img { display: block; width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); background: #fff; }
+figcaption { font-size: 0.86rem; color: var(--muted); margin-top: 8px; }
+
+/* body columns */
+.body { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 40px; align-items: start; padding-block: 28px 64px; }
+.main { display: flex; flex-direction: column; gap: 56px; min-width: 0; }
+section { scroll-margin-top: 72px; }
+.rail { position: sticky; top: 76px; display: flex; flex-direction: column; gap: 16px; }
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+.panel h3 { font-size: 1rem; margin-bottom: 10px; }
+dl.details { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 14px; margin: 0; font-size: 0.93rem; }
+dl.details dt { color: var(--muted); }
+dl.details dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+
+.lede { font-size: 1.15rem; color: var(--muted); max-width: 62ch; margin-top: 10px; }
+.features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 22px; }
+.feature { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px; }
+.feature p { color: var(--muted); }
+.disclaimer { background: var(--note); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font-size: 0.92rem; color: var(--ink) !important; margin-top: 6px; }
+
+/* install */
+.paths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 18px; }
+.path { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 8px; }
+.path.primary { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.path .tag { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+.path p { color: var(--muted); }
+.steps { list-style: none; margin: 22px 0 0; padding: 0; display: flex; flex-direction: column; gap: 18px; }
+.step { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.2fr); gap: 24px; align-items: start; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 22px; }
+.step-text { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.num { display: inline-grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: var(--mark); color: #fff; font: 800 1.1rem/1 var(--display); }
+.step-text p, .step-text li { color: var(--muted); }
+.step-text ul { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 4px; }
+.step-text strong { color: var(--ink); }
+.ill { margin: 0; min-width: 0; }
+.ill svg, .ill img { display: block; width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); background: #fff; }
+.ill.drawn figcaption::before { content: "Illustration · "; font-weight: 600; }
+.tip { background: var(--mark-soft); border-left: 4px solid var(--mark); padding: 10px 14px; border-radius: 0 8px 8px 0; color: var(--ink) !important; font-size: 0.95rem; }
+.copyrow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.copyrow input { font: 500 1rem var(--mono); color: var(--ink); background: var(--note); border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; width: 15.5em; max-width: 100%; }
+.status { font-size: 0.9rem; color: var(--muted); min-height: 1.3em; }
+
+/* privacy */
+.privacy { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+.privacy div { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.privacy b { display: block; font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+
+details { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; }
+details + details { margin-top: 10px; }
+summary { cursor: pointer; font-weight: 700; }
+details p { color: var(--muted); margin-top: 8px; max-width: 70ch; }
+footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var(--muted); font-size: 0.9rem; }
+
+@media (max-width: 900px) {
+  .body { grid-template-columns: minmax(0, 1fr); }
+  .rail { position: static; }
+  .step, .paths, .features, .privacy { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  .listing { grid-template-columns: auto minmax(0, 1fr); }
+  .listing .get { grid-column: 1 / -1; }
+  .listing img.icon { width: 72px; height: 72px; border-radius: 16px; }
+  .topbar nav { gap: 12px; font-size: 0.9rem; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <span class="who">Regis Jesuit · Ed Tech</span>
+    <nav aria-label="Page sections">
+      <a href="#overview">Overview</a>
+      <a href="#install">Install</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#help">Help</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="listing">
+      <img class="icon" src="assets/icon-128.png" width="96" height="96" alt="RJ Tasks icon">
+      <div>
+        <h1>RJ Tasks</h1>
+        <p class="publisher">Offered by <strong>Regis Jesuit High School Ed Tech</strong></p>
+        <div class="chips">
+          <span class="chip">Microsoft Edge</span>
+          <span class="chip">Works only on rjhs.instructure.com</span>
+          <span class="chip">No data collected</span>
+        </div>
+      </div>
+      <div class="get">
+        <a class="btn" href="#install">Get RJ Tasks</a>
+        <a class="btn secondary" href="downloads/{{ZIP}}" download>Download .zip ({{ZIPKB}} KB)</a>
+        <small>Version {{VERSION}} · Free for RJ students and staff</small>
+      </div>
+    </div>
+
+    <div class="shots" role="region" aria-label="Screenshots" tabindex="0">
+      <figure><img src="assets/shot-1-my-work.webp" width="1280" height="822" alt="Canvas dashboard with the My Work panel open: Up Next, Catch Up and Week at a glance" loading="eager"><figcaption>My Work on the Canvas dashboard</figcaption></figure>
+      <figure class="tall"><img src="assets/shot-2-catch-up.webp" width="760" height="800" alt="Catch Up list showing +12.5% max for a missing lab and +6.7% max for missing homework, with the estimate disclaimer" loading="lazy"><figcaption>Catch Up: overdue work by grade impact</figcaption></figure>
+      <figure><img src="assets/shot-3-classic.webp" width="1280" height="822" alt="Classic Canvas dashboard with RJ Tasks in the right-hand column, including progress rings" loading="lazy"><figcaption>On the classic dashboard, in the right column</figcaption></figure>
+      <figure><img src="assets/shot-4-dark.webp" width="1280" height="822" alt="My Work panel matching Canvas dark mode" loading="lazy"><figcaption>Follows Canvas dark mode</figcaption></figure>
+      <figure><img src="assets/shot-5-settings.webp" width="1280" height="822" alt="RJ Tasks settings page with student and teacher modes and section toggles" loading="lazy"><figcaption>Simple settings</figcaption></figure>
+    </div>
+    <p style="font-size:.86rem;color:var(--muted)">Screenshots use sample classes and assignments.</p>
+
+    <div class="body">
+      <div class="main">
+        <section id="overview" aria-labelledby="overview-title">
+          <h2 id="overview-title">Overview</h2>
+          <p class="lede">RJ Tasks answers one question inside Canvas: what should I work on next? It pulls everything due across your classes into one place, puts missing work in front of you, and shows you which assignments matter most for your grade.</p>
+          <div class="features">
+            <div class="feature">
+              <h3>Up Next</h3>
+              <p>The three things to do first: what's due today, then missing work, then tomorrow. Check one off and it's marked done in Canvas too, including the Canvas app.</p>
+            </div>
+            <div class="feature">
+              <h3>Catch Up</h3>
+              <p>Overdue work ordered by how much finishing each one could raise your grade, worked out from your own Canvas grades and category weights.</p>
+              <p class="disclaimer"><strong>Estimates, not your official grade.</strong> Each number assumes full credit. Your teacher decides late penalties and whether late work is accepted, and RJ Tasks can't see those rules. Your grade in Canvas is the official one.</p>
+            </div>
+            <div class="feature">
+              <h3>Week at a glance</h3>
+              <p>How many things are due on each of the next seven days, so a heavy Thursday doesn't sneak up on you.</p>
+            </div>
+            <div class="feature">
+              <h3>My Work, everywhere in Canvas</h3>
+              <p>A My Work button in the corner of every Canvas page, with a count of what's missing or due today. The same count shows on the toolbar icon.</p>
+            </div>
+            <div class="feature">
+              <h3>Progress rings</h3>
+              <p>A ring for each class showing how much of this week's work is done, with a little confetti when you finish one.</p>
+            </div>
+            <div class="feature">
+              <h3>Readable by design</h3>
+              <p>No themes or color tricks that make Canvas hard to read. Text drawn in your course colors is adjusted automatically so it stays readable.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="install" aria-labelledby="install-title">
+          <h2 id="install-title">Install</h2>
+          <div class="paths">
+            <div class="path primary">
+              <span class="tag">On an RJ school laptop</span>
+              <h3>Nothing to install</h3>
+              <p>Ed Tech turns RJ Tasks on for school laptops in Microsoft Edge. Once it reaches yours, open Canvas and look for the <strong>My Work</strong> button in the bottom-right corner.</p>
+            </div>
+            <div class="path">
+              <span class="tag">Testing it, or on another computer</span>
+              <h3>Install it yourself</h3>
+              <p>Seven steps in Microsoft Edge on Windows or Mac, about three minutes. The orange numbers in each picture match the steps.</p>
+            </div>
+          </div>
+
+          <ol class="steps">
+            <li class="step">
+              <div class="step-text">
+                <span class="num" aria-hidden="true">1</span>
+                <h3>Download RJ Tasks</h3>
+                <p>Save <code>{{ZIP}}</code> to your computer.</p>
+                <a class="btn" style="align-self:flex-start" href="downloads/{{ZIP}}" download>Download {{ZIP}}</a>
+              </div>
+              <figure class="ill drawn">{{ILL_DOWNLOAD}}<figcaption>when it finishes, click Show in folder.</figcaption></figure>
+            </li>
+            <li class="step">
+              <div class="step-text">
+                <span class="num" aria-hidden="true">2</span>
+                <h3>Unzip it, and keep the folder</h3>
+                <ul>
+                  <li><strong>Windows:</strong> right-click the file, choose <strong>Extract All…</strong>, then <strong>Extract</strong>.</li>
+                  <li><strong>Mac:</strong> double-click the file.</li>
+                </ul>
+                <p class="tip">Move the new <strong>{{FOLDER}}</strong> folder to <strong>Documents</strong>. Edge runs RJ Tasks from this folder, so if it gets deleted, RJ Tasks stops working.</p>
+              </div>
+              <figure class="ill drawn">{{ILL_EXTRACT}}<figcaption>File Explorer on Windows.</figcaption></figure>
+            </li>
+            <li class="step">
+              <div class="step-text">
+                <span class="num" aria-hidden="true">3</span>
+                <h3>Open Edge's extensions page</h3>
+                <p>In Microsoft Edge, click the address bar, type this address and press <span class="kbd">Enter</span>. Websites can't link straight to this page, so it has to be typed or pasted.</p>
+                <div class="copyrow">
+                  <input id="edge-url" type="text" value="edge://extensions" readonly aria-label="Edge extensions page address">
+                  <button class="btn secondary" id="copy-btn" type="button">Copy</button>
+                </div>
+                <p class="status" id="copy-status" role="status"></p>
+              </div>
+              <figure class="ill drawn">{{ILL_ADDRESS}}<figcaption>the Edge address bar.</figcaption></figure>
+            </li>
+            <li class="step">
+              <div class="step-text">
+                <span class="num" aria-hidden="true">4</span>
+                <h3>Turn on Developer mode</h3>
+                <p>On the left side of the Extensions page, near the bottom, switch on <strong>Developer mode</strong>. A row of new buttons appears at the top.</p>
+                <p class="tip">If the switch is grey and won't move, your computer is managed by RJ. Skip these steps: RJ Tasks will be installed for you.</p>
+              </div>
+              <figure class="ill drawn">{{ILL_DEVMODE}}<figcaption>the Extensions page with Developer mode on.</figcaption></figure>
+            </li>
+            <li class="step">
+              <div class="step-text">
+                <span class="num" aria-hidden="true">5</span>
+                <h3>Load the RJ Tasks folder</h3>
+                <p>Click <strong>Load unpacked</strong>. Find the <strong>{{FOLDER}}</strong> folder from step 2 and click <strong>Select Folder</strong>.</p>
+                <p>Pick the folder itself, not the .zip file. Inside it is a file called <code>manifest.json</code>.</p>
+              </div>
+              <figure class="ill drawn">{{ILL_LOAD}}<figcaption>Load unpacked and the folder picker.</figcaption></figure>
+            </li>
+            <li class="step">
+              <div class="step-text">
+                <span class="num" aria-hidden="true">6</span>
+                <h3>Pin it to the toolbar</h3>
+                <p>RJ Tasks now appears in your list of extensions with its switch on. To keep its icon next to the address bar, click the puzzle piece, then the eye next to RJ Tasks.</p>
+              </div>
+              <figure class="ill drawn">{{ILL_PIN}}<figcaption>the Extensions menu in the Edge toolbar.</figcaption></figure>
+            </li>
+            <li class="step">
+              <div class="step-text">
+                <span class="num" aria-hidden="true">7</span>
+                <h3>Open Canvas</h3>
+                <p>Go to <a href="https://rjhs.instructure.com">rjhs.instructure.com</a>, or reload Canvas if it's already open. Click <strong>My Work</strong> in the bottom-right corner. On the classic dashboard and class pages, RJ Tasks sits in the right-hand column instead.</p>
+              </div>
+              <figure class="ill"><img src="assets/my-work-button.webp" width="900" height="578" alt="Canvas dashboard with the My Work button in the bottom-right corner showing a red 5" loading="lazy"><figcaption>The My Work button, with a count of what's missing or due today.</figcaption></figure>
+            </li>
+          </ol>
+        </section>
+
+        <section id="privacy" aria-labelledby="privacy-title">
+          <h2 id="privacy-title">Privacy</h2>
+          <p class="lede">RJ Tasks shows you your own Canvas information and nothing leaves your browser.</p>
+          <div class="privacy">
+            <div><b>Data collected</b>None. No analytics, tracking, accounts or ads.</div>
+            <div><b>Talks to</b>Only rjhs.instructure.com, using your own Canvas sign-in.</div>
+            <div><b>Reads</b>Your classes, due dates, missing work and the grades you can already see in Canvas.</div>
+            <div><b>Changes</b>Only what you click: marking something done, or adding a personal to-do in your Canvas planner.</div>
+            <div><b>Browser permission</b>"Storage", to remember your settings. Nothing else.</div>
+            <div><b>Teacher settings</b>If a teacher hides class totals, RJ Tasks hides grade percentages for that class too.</div>
+          </div>
+        </section>
+
+        <section id="help" aria-labelledby="help-title">
+          <h2 id="help-title" style="margin-bottom:16px">Help</h2>
+          <details>
+            <summary>I don't see My Work in Canvas</summary>
+            <p>Make sure you're on rjhs.instructure.com and reload the page. In Edge, open <code>edge://extensions</code> and check that RJ Tasks is listed and switched on. On the classic dashboard, look in the right-hand column instead of the corner.</p>
+          </details>
+          <details>
+            <summary>Edge asks me to turn off "developer mode extensions"</summary>
+            <p>Edge shows this reminder for any extension installed by hand. Choose to keep it. When Ed Tech installs RJ Tasks for you, the reminder doesn't appear.</p>
+          </details>
+          <details>
+            <summary>RJ Tasks stopped working after I cleaned up my Downloads</summary>
+            <p>The {{FOLDER}} folder was probably deleted. Download it again, put the folder in Documents, and repeat step 5.</p>
+          </details>
+          <details>
+            <summary>A Catch Up number doesn't match my grade</summary>
+            <p>Catch Up shows estimates that assume full credit. Late penalties, extra rules your teacher uses, and grades that haven't been posted yet can all change the real result. Your grade in Canvas is the official one. If the numbers look very different, the item is marked "about."</p>
+          </details>
+          <details>
+            <summary>The panel shows an error</summary>
+            <p>Reload Canvas. If it keeps happening, submit a Help Desk ticket with a screenshot of the message.</p>
+          </details>
+        </section>
+      </div>
+
+      <aside class="rail" aria-label="Details">
+        <div class="panel">
+          <h3>Details</h3>
+          <dl class="details">
+            <dt>Version</dt><dd>{{VERSION}}</dd>
+            <dt>Updated</dt><dd>{{UPDATED}}</dd>
+            <dt>Size</dt><dd>{{ZIPKB}} KB</dd>
+            <dt>Browser</dt><dd>Microsoft Edge</dd>
+            <dt>Works on</dt><dd>rjhs.instructure.com</dd>
+            <dt>Language</dt><dd>English</dd>
+            <dt>Made by</dt><dd>Regis Jesuit Ed Tech</dd>
+          </dl>
+        </div>
+        <div class="panel">
+          <h3>Need help?</h3>
+          <p style="color:var(--muted);font-size:.95rem">Submit a Help Desk ticket and include a screenshot.</p>
+        </div>
+        <div class="panel">
+          <h3>Credits</h3>
+          <p style="color:var(--muted);font-size:.95rem">Built on the open-source Tasks for Canvas extension by Jeff Cheng and contributors (MIT license). Not affiliated with Instructure.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">RJ Tasks · Regis Jesuit High School Ed Tech</div>
+</footer>
+
+<script>
+(function () {
+  var copyBtn = document.getElementById('copy-btn');
+  var field = document.getElementById('edge-url');
+  var status = document.getElementById('copy-status');
+  copyBtn.addEventListener('click', function () {
+    var done = function () { status.textContent = 'Copied. Paste it into the Edge address bar.'; };
+    var fallback = function () {
+      field.focus(); field.select();
+      status.textContent = 'Selected. Press Ctrl+C (or Cmd+C on a Mac) to copy.';
+    };
+    try { navigator.clipboard.writeText(field.value).then(done, fallback); } catch (e) { fallback(); }
+  });
+})();
+</script>
+</body>
+</html>
