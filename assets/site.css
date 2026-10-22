@@ -153,3 +153,12 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
 .policy { max-width: 760px; padding-block: 36px 56px; display: flex; flex-direction: column; gap: 14px; }
 .policy h2 { margin-top: 14px; font-size: 1.3rem; }
 .policy p { color: var(--muted); max-width: 68ch; }
+
+/* Plan your week guide */
+.guide ul, .guide ol { margin: 0; padding-left: 1.3em; display: flex; flex-direction: column; gap: 8px; }
+.guide-steps li::marker { font-weight: 700; color: var(--mark); }
+.guide-summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 8px 0 6px; }
+.guide-summary div { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-weight: 600; display: flex; flex-direction: column; gap: 2px; }
+.guide-summary b { color: var(--mark); font-size: 1.3rem; }
+.guide-summary small { color: var(--muted); font-weight: 400; font-size: 0.95rem; }
+@media (max-width: 720px) { .guide-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
