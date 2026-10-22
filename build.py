@@ -1,13 +1,13 @@
-"""Builds index.html for the RJ Tasks homepage (GitHub Pages).
+"""Builds index.html for the RJ Tasks for Students homepage (GitHub Pages).
 Run after dropping a new release zip into downloads/:  python3 build.py
 """
 import hashlib, os
 from illustrations import ILL_DOWNLOAD, ILL_EXTRACT, ILL_ADDRESS, ILL_DEVMODE, ILL_LOAD, ILL_PIN
 
-VERSION = "1.1.4"
+VERSION = "1.2.0"
 UPDATED = "October 22, 2026"
-ZIP = f"rj-tasks-{VERSION}.zip"
-FOLDER = f"rj-tasks-{VERSION}"
+ZIP = f"rj-tasks-for-students-{VERSION}.zip"
+FOLDER = f"rj-tasks-for-students-{VERSION}"
 size_kb = round(os.path.getsize(f"downloads/{ZIP}") / 1024)
 SHA256 = hashlib.sha256(open(f"downloads/{ZIP}", "rb").read()).hexdigest()
 FORM_URL = ("https://forms.cloud.microsoft/Pages/ResponsePage.aspx?"

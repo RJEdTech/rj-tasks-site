@@ -1,8 +1,8 @@
-"""Builds site/index.html: the RJ Tasks install page.
+"""Builds site/index.html: the RJ Tasks for Students install page.
 
 Edge screens are drawn as SVG illustrations (labelled as such on the page)
 so they contain no one's real extensions, tabs or accounts. The Canvas images
-are real screenshots of RJ Tasks running against the mock Canvas.
+are real screenshots of RJ Tasks for Students running against the mock Canvas.
 Run: python3 build_page.py  ->  index.html
 """
 
@@ -85,7 +85,7 @@ body = (
     + f'<text x="24" y="130" font-size="13" fill="{E["muted"]}">After you save it, Edge shows</text>'
     + f'<text x="24" y="150" font-size="13" fill="{E["muted"]}">the file in its Downloads list.</text>'
 )
-ILL_DOWNLOAD = svg(W, H - 100, chrome(W, H - 100, "rjedtech.github.io/rj-tasks-site", body, tab="RJ Tasks"), "Edge downloads list showing rj-tasks-1.1.0.zip with Show in folder highlighted")
+ILL_DOWNLOAD = svg(W, H - 100, chrome(W, H - 100, "rjedtech.github.io/rj-tasks-site", body, tab="RJ Tasks for Students"), "Edge downloads list showing rj-tasks-1.1.0.zip with Show in folder highlighted")
 
 # 2 — extract all (File Explorer)
 fe = []
@@ -155,7 +155,7 @@ def ext_page(dev_on, highlight_toggle, highlight_load, folder_dialog=False, card
         b.append(f'<rect x="226" y="176" width="300" height="92" rx="8" fill="#fff" stroke="{E["line"]}"/>')
         b.append(f'<rect x="240" y="190" width="32" height="32" rx="7" fill="#1e293b"/>')
         b.append(f'<path d="M248 206 l5 5 l10 -11" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round"/>')
-        b.append(f'<text x="284" y="204" font-size="13.5" font-weight="600" fill="{E["text"]}">RJ Tasks  1.1.0</text>')
+        b.append(f'<text x="284" y="204" font-size="13.5" font-weight="600" fill="{E["text"]}">RJ Tasks for Students  1.2.0</text>')
         b.append(f'<text x="284" y="222" font-size="11" fill="{E["muted"]}">See what\'s due and what to work on next…</text>')
         b.append(f'<text x="240" y="254" font-size="11.5" fill="{E["blue"]}">Details    Remove    Reload</text>')
         b.append(toggle(470, 240, True))
@@ -174,7 +174,7 @@ def ext_page(dev_on, highlight_toggle, highlight_load, folder_dialog=False, card
 
 ILL_DEVMODE = svg(W, H, ext_page(True, True, False), "Edge Extensions page with the Developer mode switch at the lower left turned on")
 ILL_LOAD = svg(W, H, ext_page(True, False, True, folder_dialog=True), "Load unpacked button highlighted and the folder picker with rj-tasks-1.1.0 selected")
-ILL_LOADED = svg(W, H, ext_page(True, False, False, card=True), "RJ Tasks shown on the Extensions page, switched on")
+ILL_LOADED = svg(W, H, ext_page(True, False, False, card=True), "RJ Tasks for Students shown on the Extensions page, switched on")
 
 # 6 — pin to toolbar
 body = (
@@ -183,7 +183,7 @@ body = (
     f'<rect x="{W-292}" y="124" width="264" height="36" rx="5" fill="#f3f6fb"/>'
     f'<rect x="{W-282}" y="131" width="22" height="22" rx="5" fill="#1e293b"/>'
     f'<path d="M{W-277} 142 l4 4 l7 -8" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>'
-    f'<text x="{W-250}" y="147" font-size="12.5" fill="{E["text"]}">RJ Tasks</text>'
+    f'<text x="{W-250}" y="147" font-size="12.5" fill="{E["text"]}">RJ Tasks for Students</text>'
     # eye icon
     f'<g transform="translate({W-70},134)"><path d="M0 8 C4 1 14 1 18 8 C14 15 4 15 0 8Z" fill="none" stroke="{E["text"]}" stroke-width="1.5"/>'
     f'<circle cx="9" cy="8" r="3" fill="{E["text"]}"/></g>'
@@ -192,7 +192,7 @@ body = (
     + callout(W - 30, 112, "6")
     + f'<rect x="{W-96}" y="45" width="34" height="32" rx="6" fill="none" stroke="{E["hl"]}" stroke-width="3"/>'
     + f'<text x="24" y="130" font-size="13" fill="{E["muted"]}">Click the puzzle piece, then the</text>'
-    + f'<text x="24" y="150" font-size="13" fill="{E["muted"]}">eye next to RJ Tasks.</text>'
+    + f'<text x="24" y="150" font-size="13" fill="{E["muted"]}">eye next to RJ Tasks for Students.</text>'
 )
-ILL_PIN = svg(W, 270, chrome(W, 270, "rjhs.instructure.com", body, tab="Dashboard", puzzle_active=True), "Edge Extensions menu with the eye icon next to RJ Tasks highlighted")
+ILL_PIN = svg(W, 270, chrome(W, 270, "rjhs.instructure.com", body, tab="Dashboard", puzzle_active=True), "Edge Extensions menu with the eye icon next to RJ Tasks for Students highlighted")
 
