@@ -148,3 +148,8 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
 .request { background: var(--card); border: 1px solid var(--accent); border-radius: 12px; padding: 20px 22px; display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
 .request p { color: var(--muted); }
 .hash { font-family: var(--mono); font-size: .78rem; overflow-wrap: anywhere; color: var(--ink); }
+
+/* privacy policy page */
+.policy { max-width: 760px; padding-block: 36px 56px; display: flex; flex-direction: column; gap: 14px; }
+.policy h2 { margin-top: 14px; font-size: 1.3rem; }
+.policy p { color: var(--muted); max-width: 68ch; }

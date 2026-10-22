@@ -4,7 +4,7 @@ Run after dropping a new release zip into downloads/:  python3 build.py
 import hashlib, os
 from illustrations import ILL_DOWNLOAD, ILL_EXTRACT, ILL_ADDRESS, ILL_DEVMODE, ILL_LOAD, ILL_PIN
 
-VERSION = "1.1.2"
+VERSION = "1.1.3"
 UPDATED = "October 22, 2026"
 ZIP = f"rj-tasks-{VERSION}.zip"
 FOLDER = f"rj-tasks-{VERSION}"
