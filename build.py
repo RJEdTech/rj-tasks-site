@@ -4,8 +4,8 @@ Run after dropping a new release zip into downloads/:  python3 build.py
 import hashlib, os
 from illustrations import ILL_DOWNLOAD, ILL_EXTRACT, ILL_ADDRESS, ILL_DEVMODE, ILL_LOAD, ILL_PIN
 
-VERSION = "1.2.0"
-UPDATED = "October 22, 2026"
+VERSION = "1.4.1"
+UPDATED = "November 5, 2026"
 ZIP = f"rj-tasks-for-students-{VERSION}.zip"
 FOLDER = f"rj-tasks-for-students-{VERSION}"
 size_kb = round(os.path.getsize(f"downloads/{ZIP}") / 1024)

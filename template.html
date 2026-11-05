@@ -42,7 +42,7 @@
       </div>
       <div class="get">
         <a class="btn" href="#install">Get RJ Tasks for Students</a>
-        <a class="btn secondary" href="downloads/{{ZIP}}" download>Download .zip ({{ZIPKB}} KB)</a>
+        <a class="btn secondary" href="walkthrough.html">Step-by-step walkthrough</a>
         <small>Version {{VERSION}} · Free for RJ students and staff</small>
       </div>
     </div>
@@ -92,89 +92,9 @@
 
         <section id="install" aria-labelledby="install-title">
           <h2 id="install-title">Install</h2>
-          <div class="paths">
-            <div class="path primary">
-              <span class="tag">On an RJ school laptop</span>
-              <h3>Nothing to install</h3>
-              <p>Ed Tech turns RJ Tasks for Students on for school laptops in Microsoft Edge. Once it reaches yours, open Canvas and look for the <strong>My Work</strong> button in the bottom-right corner.</p>
-            </div>
-            <div class="path">
-              <span class="tag">Testing it, or on another computer</span>
-              <h3>Install it yourself</h3>
-              <p>Seven steps in Microsoft Edge on Windows or Mac, about three minutes. The orange numbers in each picture match the steps.</p>
-            </div>
-          </div>
-
-          <ol class="steps">
-            <li class="step">
-              <div class="step-text">
-                <span class="num" aria-hidden="true">1</span>
-                <h3>Download RJ Tasks for Students</h3>
-                <p>Save <code>{{ZIP}}</code> to your computer.</p>
-                <a class="btn self-start" href="downloads/{{ZIP}}" download>Download {{ZIP}}</a>
-              </div>
-              <figure class="ill drawn">{{ILL_DOWNLOAD}}<figcaption>when it finishes, click Show in folder.</figcaption></figure>
-            </li>
-            <li class="step">
-              <div class="step-text">
-                <span class="num" aria-hidden="true">2</span>
-                <h3>Unzip it, and keep the folder</h3>
-                <ul>
-                  <li><strong>Windows:</strong> right-click the file, choose <strong>Extract All…</strong>, then <strong>Extract</strong>.</li>
-                  <li><strong>Mac:</strong> double-click the file.</li>
-                </ul>
-                <p class="tip">Move the new <strong>{{FOLDER}}</strong> folder to <strong>Documents</strong>. Edge runs RJ Tasks for Students from this folder, so if it gets deleted, RJ Tasks for Students stops working.</p>
-              </div>
-              <figure class="ill drawn">{{ILL_EXTRACT}}<figcaption>File Explorer on Windows.</figcaption></figure>
-            </li>
-            <li class="step">
-              <div class="step-text">
-                <span class="num" aria-hidden="true">3</span>
-                <h3>Open Edge's extensions page</h3>
-                <p>In Microsoft Edge, click the address bar, type this address and press <span class="kbd">Enter</span>. Websites can't link straight to this page, so it has to be typed or pasted.</p>
-                <div class="copyrow">
-                  <input id="edge-url" type="text" value="edge://extensions" readonly aria-label="Edge extensions page address">
-                  <button class="btn secondary" id="copy-btn" type="button">Copy</button>
-                </div>
-                <p class="status" id="copy-status" role="status"></p>
-              </div>
-              <figure class="ill drawn">{{ILL_ADDRESS}}<figcaption>the Edge address bar.</figcaption></figure>
-            </li>
-            <li class="step">
-              <div class="step-text">
-                <span class="num" aria-hidden="true">4</span>
-                <h3>Turn on Developer mode</h3>
-                <p>On the left side of the Extensions page, near the bottom, switch on <strong>Developer mode</strong>. A row of new buttons appears at the top.</p>
-                <p class="tip">If the switch is grey and won't move, your computer is managed by RJ. Skip these steps: RJ Tasks for Students will be installed for you.</p>
-              </div>
-              <figure class="ill drawn">{{ILL_DEVMODE}}<figcaption>the Extensions page with Developer mode on.</figcaption></figure>
-            </li>
-            <li class="step">
-              <div class="step-text">
-                <span class="num" aria-hidden="true">5</span>
-                <h3>Load the RJ Tasks for Students folder</h3>
-                <p>Click <strong>Load unpacked</strong>. Find the <strong>{{FOLDER}}</strong> folder from step 2 and click <strong>Select Folder</strong>.</p>
-                <p>Pick the folder itself, not the .zip file. Inside it is a file called <code>manifest.json</code>.</p>
-              </div>
-              <figure class="ill drawn">{{ILL_LOAD}}<figcaption>Load unpacked and the folder picker.</figcaption></figure>
-            </li>
-            <li class="step">
-              <div class="step-text">
-                <span class="num" aria-hidden="true">6</span>
-                <h3>Pin it to the toolbar</h3>
-                <p>RJ Tasks for Students now appears in your list of extensions with its switch on. To keep its icon next to the address bar, click the puzzle piece, then the eye next to RJ Tasks for Students.</p>
-              </div>
-              <figure class="ill drawn">{{ILL_PIN}}<figcaption>the Extensions menu in the Edge toolbar.</figcaption></figure>
-            </li>
-            <li class="step">
-              <div class="step-text">
-                <span class="num" aria-hidden="true">7</span>
-                <h3>Open Canvas</h3>
-                <p>Go to <a href="https://rjhs.instructure.com">rjhs.instructure.com</a>, or reload Canvas if it's already open. Click <strong>My Work</strong> in the bottom-right corner. On the classic dashboard and class pages, RJ Tasks for Students sits in the right-hand column instead.</p>
-              </div>
-              <figure class="ill"><img src="assets/my-work-button.webp" width="900" height="578" alt="Canvas dashboard with the My Work button in the bottom-right corner showing a red 5" loading="lazy"><figcaption>The My Work button, with a count of what's missing or due today.</figcaption></figure>
-            </li>
-          </ol>
+          <p>RJ Tasks for Students should already be on your school laptop, so you don't need to install anything. Open <a href="https://rjhs.instructure.com">Canvas</a> and look on the right side of your Dashboard, or for the <strong>My Work</strong> button in the bottom-right corner.</p>
+          <p>Not there? <a href="https://microsoftedge.microsoft.com/addons/detail/bpmcgpoplgdeklojcndcjmdffjmkaeji">Add it from the Edge store</a>, in Microsoft Edge.</p>
+          <p><a class="btn self-start" href="walkthrough.html">See the step-by-step walkthrough</a></p>
         </section>
 
         <section id="privacy" aria-labelledby="privacy-title">
