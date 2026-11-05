@@ -162,3 +162,15 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var
 .guide-summary b { color: var(--mark); font-size: 1.3rem; }
 .guide-summary small { color: var(--muted); font-weight: 400; font-size: 0.95rem; }
 @media (max-width: 720px) { .guide-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* Walkthroughs */
+.walk { max-width: 1040px; padding-block: 36px 56px; display: flex; flex-direction: column; gap: 14px; }
+.walk h2 { margin-top: 26px; font-size: 1.5rem; scroll-margin-top: 16px; }
+.walk .steps { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
+.walk .step { scroll-margin-top: 16px; }
+.walk .step.wide { grid-template-columns: minmax(0, 1fr); }
+.walk .ill img { max-height: 760px; width: auto; max-width: 100%; }
+.walk .ill figcaption { margin-top: 6px; font-size: .95rem; color: var(--muted); }
+.jump-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 0; padding: 0; list-style: none; }
+.jump-list a { display: inline-block; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); text-decoration: none; font-weight: 600; }
+.walk .note-box { background: var(--note); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; }
